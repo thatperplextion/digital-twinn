@@ -1,6 +1,5 @@
 package com.digitaltwin.common.dto;
 
-import com.digitaltwin.common.model.DigitalTwin;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import java.util.*;

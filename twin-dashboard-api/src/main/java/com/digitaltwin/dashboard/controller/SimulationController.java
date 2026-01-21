@@ -1,6 +1,5 @@
 package com.digitaltwin.dashboard.controller;
 
-import com.digitaltwin.common.dto.EventRequest;
 import com.digitaltwin.common.dto.EventResponse;
 import com.digitaltwin.dashboard.service.SimulationService;
 import io.swagger.v3.oas.annotations.Operation;

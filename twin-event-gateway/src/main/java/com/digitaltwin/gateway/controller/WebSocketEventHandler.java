@@ -2,7 +2,6 @@ package com.digitaltwin.gateway.controller;
 
 import com.digitaltwin.common.dto.EventRequest;
 import com.digitaltwin.common.dto.EventResponse;
-import com.digitaltwin.common.dto.StreamUpdate;
 import com.digitaltwin.gateway.service.EventIngestionService;
 import com.digitaltwin.gateway.service.StreamingService;
 import lombok.RequiredArgsConstructor;
