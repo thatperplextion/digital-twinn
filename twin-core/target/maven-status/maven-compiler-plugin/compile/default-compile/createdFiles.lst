@@ -1,0 +1,4 @@
+com\digitaltwin\core\config\CoreKafkaConfig.class
+com\digitaltwin\core\config\CoreRedisConfig.class
+com\digitaltwin\core\health\RedisHealthIndicator.class
+com\digitaltwin\core\metrics\TwinMetricsService.class
