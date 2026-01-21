@@ -31,15 +31,15 @@ public class ActionOrchestrationService {
         return policyEngine.evaluatePolicies(twin, prediction)
             .flatMap(policies -> {
                 if (policies.isEmpty()) {
-                    return Mono.just(Optional.empty());
+                    return Mono.just(Optional.<Action>empty());
                 }
                 
                 // Create action based on prediction and policies
                 Action action = createActionFromPrediction(twin, prediction, policies);
                 return executeAction(action).map(Optional::of);
             })
-            .doOnSuccess(opt -> opt.ifPresent(action -> 
-                log.info("Action triggered from prediction: {} -> {}", prediction.getType(), action.getType())));
+            .doOnSuccess(opt -> opt.ifPresent(executedAction -> 
+                log.info("Action triggered from prediction: {} -> {}", prediction.getType(), executedAction.getType())));
     }
     
     /**
@@ -49,15 +49,15 @@ public class ActionOrchestrationService {
         return policyEngine.evaluatePolicies(twin, anomaly)
             .flatMap(policies -> {
                 if (policies.isEmpty()) {
-                    return Mono.just(Optional.empty());
+                    return Mono.just(Optional.<Action>empty());
                 }
                 
                 // Create action based on anomaly
                 Action action = createActionFromAnomaly(twin, anomaly, policies);
                 return executeAction(action).map(Optional::of);
             })
-            .doOnSuccess(opt -> opt.ifPresent(action -> 
-                log.info("Action triggered from anomaly: {} -> {}", anomaly.getType(), action.getType())));
+            .doOnSuccess(opt -> opt.ifPresent(executedAction -> 
+                log.info("Action triggered from anomaly: {} -> {}", anomaly.getType(), executedAction.getType())));
     }
     
     /**

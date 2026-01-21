@@ -165,11 +165,11 @@ public class PredictionService {
             double confidence = probabilities.getOrDefault(predictedState, 0.0);
             
             // Estimate time horizon based on average state duration
-            long avgDuration = stateHistory.stream()
+            long avgDuration = (long) stateHistory.stream()
                 .filter(s -> s.getDurationMs() != null)
                 .mapToLong(com.digitaltwin.common.model.TwinState::getDurationMs)
                 .average()
-                .orElse(60000);
+                .orElse(60000.0);
             
             return Prediction.builder()
                 .id(IdGenerator.generateTimeBasedId("PRED"))

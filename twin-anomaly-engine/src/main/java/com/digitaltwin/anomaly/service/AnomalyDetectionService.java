@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -288,7 +287,6 @@ public class AnomalyDetectionService {
     public Mono<Optional<Anomaly>> detectThresholdViolation(DigitalTwin twin, TwinEvent event) {
         return Mono.fromCallable(() -> {
             DigitalTwin.BehavioralMetrics metrics = twin.getBehavioralMetrics();
-            List<Anomaly> violations = new ArrayList<>();
             
             // Check risk score threshold
             if (metrics.getRiskScore() > 0.8) {
