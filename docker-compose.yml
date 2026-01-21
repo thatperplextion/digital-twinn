@@ -311,20 +311,22 @@ services:
 
   # ==================== Frontend ====================
 
-  frontend:
+  dashboard-ui:
     build:
-      context: ./frontend
+      context: ./dashboard-ui
       dockerfile: Dockerfile
-    container_name: dt-frontend
+    container_name: dt-dashboard-ui
     ports:
-      - "3000:3000"
-    environment:
-      REACT_APP_API_URL: http://localhost:8080
-      REACT_APP_WS_URL: ws://localhost:8080
+      - "3000:80"
     depends_on:
       - dashboard-api
     networks:
       - dt-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 # ==================== Networks ====================
 
