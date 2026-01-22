@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Service for simulation and demo features
@@ -55,7 +56,7 @@ public class SimulationService {
             twin.setLastUpdatedAt(Instant.now());
             
             // Update temporal patterns
-            String hour = String.format("%02d", Instant.now().atZone(java.time.ZoneId.systemDefault()).getHour());
+            String hour = "%02d".formatted(Instant.now().atZone(java.time.ZoneId.systemDefault()).getHour());
             twin.getTemporalPatterns().getHourlyActivity().merge(hour, 1, Integer::sum);
             
             // Add to recent actions
@@ -81,7 +82,7 @@ public class SimulationService {
             .twinId(twinId)
             .status("PROCESSED")
             .receivedAt(Instant.now())
-            .processingLatencyMs((long) (Math.random() * 50))
+            .processingLatencyMs((long) (ThreadLocalRandom.current().nextDouble() * 50))
             .message("Event " + sequence + " processed: " + eventType)
             .build();
     }
@@ -369,11 +370,11 @@ public class SimulationService {
     
     private double calculateProjectedRisk(Map<String, Object> state) {
         // Simplified risk calculation
-        return Math.random() * 0.5 + 0.2;
+        return ThreadLocalRandom.current().nextDouble() * 0.5 + 0.2;
     }
     
     private double calculateAnomalyProbability(Map<String, Object> state) {
-        return Math.random() * 0.3;
+        return ThreadLocalRandom.current().nextDouble() * 0.3;
     }
     
     private List<String> generateRecommendations(Map<String, Object> state) {
