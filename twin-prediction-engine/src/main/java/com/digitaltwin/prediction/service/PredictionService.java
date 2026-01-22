@@ -75,7 +75,7 @@ public class PredictionService {
             
             // Consider sequential patterns
             if (recentActions.size() >= 2) {
-                String lastAction = recentActions.getFirst();
+                String lastAction = recentActions.get(0);
                 Map<String, Integer> followers = findFollowingActions(recentActions, lastAction);
                 
                 if (!followers.isEmpty()) {

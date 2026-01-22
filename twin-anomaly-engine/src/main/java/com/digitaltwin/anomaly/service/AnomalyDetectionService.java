@@ -254,7 +254,7 @@ public class AnomalyDetectionService {
             
             // Check if the new transition is unusual
             if (!recentActions.isEmpty()) {
-                String newPair = recentActions.getFirst() + "->" + event.getEventType();
+                String newPair = recentActions.get(0) + "->" + event.getEventType();
                 int pairCount = pairFrequency.getOrDefault(newPair, 0);
                 int totalPairs = recentActions.size() - 1;
                 

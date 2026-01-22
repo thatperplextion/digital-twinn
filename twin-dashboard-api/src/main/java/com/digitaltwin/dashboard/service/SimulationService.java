@@ -60,7 +60,7 @@ public class SimulationService {
             twin.getTemporalPatterns().getHourlyActivity().merge(hour, 1, Integer::sum);
             
             // Add to recent actions
-            twin.getContextualMemory().getRecentActions().addFirst(eventType);
+            twin.getContextualMemory().getRecentActions().add(0, eventType);
             if (twin.getContextualMemory().getRecentActions().size() > 50) {
                 twin.getContextualMemory().setRecentActions(
                     new ArrayList<>(twin.getContextualMemory().getRecentActions().subList(0, 50)));
