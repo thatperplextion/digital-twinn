@@ -3,7 +3,10 @@ package com.digitaltwin.common.dto;
 import com.digitaltwin.common.model.DigitalTwin;
 import com.digitaltwin.common.model.Prediction;
 import com.digitaltwin.common.model.Anomaly;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.time.Instant;
 import java.util.*;
 
