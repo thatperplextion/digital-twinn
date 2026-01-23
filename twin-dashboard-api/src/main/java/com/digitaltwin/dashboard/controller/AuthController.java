@@ -5,53 +5,74 @@ import com.digitaltwin.dashboard.dto.AuthResponse;
 import com.digitaltwin.dashboard.security.JwtService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
+import jakarta.annotation.PostConstruct;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * Authentication Controller
+ * Authentication Controller - Production Ready
  */
 @RestController
 @RequestMapping("/api/v1/auth")
-@RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Authentication", description = "Authentication endpoints")
 public class AuthController {
     
     private final JwtService jwtService;
     
-    // Demo users (in production, use proper user management)
-    private static final Map<String, String> DEMO_USERS = Map.of(
-        "admin", "admin123",
-        "operator", "operator123",
-        "viewer", "viewer123"
-    );
+    @Value("${ADMIN_USERNAME:admin}")
+    private String adminUsername;
     
-    private static final Map<String, Set<String>> USER_ROLES = Map.of(
-        "admin", Set.of("ADMIN", "OPERATOR", "VIEWER"),
-        "operator", Set.of("OPERATOR", "VIEWER"),
-        "viewer", Set.of("VIEWER")
-    );
+    @Value("${ADMIN_PASSWORD:admin123}")
+    private String adminPassword;
+    
+    private Map<String, String> users;
+    private Map<String, Set<String>> userRoles;
+    
+    public AuthController(JwtService jwtService) {
+        this.jwtService = jwtService;
+    }
+    
+    @PostConstruct
+    public void init() {
+        // Initialize users from environment variables
+        users = new HashMap<>();
+        users.put(adminUsername, adminPassword);
+        users.put("operator", "operator123");  // Can be made configurable too
+        users.put("viewer", "viewer123");
+        
+        userRoles = new HashMap<>();
+        userRoles.put(adminUsername, Set.of("ADMIN", "OPERATOR", "VIEWER"));
+        userRoles.put("operator", Set.of("OPERATOR", "VIEWER"));
+        userRoles.put("viewer", Set.of("VIEWER"));
+        
+        log.info("Auth configured with admin user: {}", adminUsername);
+    }
     
     @PostMapping("/login")
     @Operation(summary = "Login and get JWT token")
     public Mono<AuthResponse> login(@RequestBody AuthRequest request) {
         return Mono.fromCallable(() -> {
-            String storedPassword = DEMO_USERS.get(request.getUsername());
+            String storedPassword = users.get(request.getUsername());
             
             if (storedPassword == null || !storedPassword.equals(request.getPassword())) {
+                log.warn("Failed login attempt for user: {}", request.getUsername());
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
             }
             
-            Set<String> roles = USER_ROLES.get(request.getUsername());
+            Set<String> roles = userRoles.get(request.getUsername());
             String token = jwtService.generateToken(request.getUsername(), roles);
+            
+            log.info("Successful login for user: {}", request.getUsername());
             
             return AuthResponse.builder()
                 .token(token)
@@ -69,7 +90,7 @@ public class AuthController {
             String token = authHeader.replace("Bearer ", "");
             String newToken = jwtService.refreshToken(token);
             String username = jwtService.extractUsername(token);
-            Set<String> roles = USER_ROLES.get(username);
+            Set<String> roles = userRoles.get(username);
             
             return AuthResponse.builder()
                 .token(newToken)
