@@ -45,9 +45,9 @@ export default function Layout({ children }: LayoutProps) {
     <div className="min-h-screen bg-mesh relative overflow-hidden">
       {/* Animated background orbs */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="orb orb-teal w-96 h-96 -top-48 -left-48 animate-float" />
-        <div className="orb orb-cyan w-80 h-80 top-1/2 -right-40 animate-float" style={{ animationDelay: '1s' }} />
-        <div className="orb orb-emerald w-64 h-64 -bottom-32 left-1/3 animate-float" style={{ animationDelay: '2s' }} />
+        <div className="orb orb-orange w-96 h-96 -top-48 -left-48 animate-float" />
+        <div className="orb orb-coral w-80 h-80 top-1/2 -right-40 animate-float" style={{ animationDelay: '1s' }} />
+        <div className="orb orb-rose w-64 h-64 -bottom-32 left-1/3 animate-float" style={{ animationDelay: '2s' }} />
       </div>
 
       {/* Sidebar */}

@@ -242,7 +242,7 @@ export default function Dashboard() {
           <MultiLineChart
             data={chartData}
             lines={[
-              { key: 'events', color: '#0d9488', name: 'Events' },
+              { key: 'events', color: '#f97316', name: 'Events' },
               { key: 'predictions', color: '#34d399', name: 'Predictions' },
               { key: 'anomalies', color: '#f87171', name: 'Anomalies' },
             ]}
@@ -293,7 +293,7 @@ export default function Dashboard() {
             <MetricGauge
               value={stats.predictionAccuracy}
               title="Prediction Acc."
-              color="#06b6d4"
+              color="#fb923c"
               size="sm"
             />
             <div className="col-span-2 space-y-4">
@@ -360,7 +360,7 @@ export default function Dashboard() {
         <GradientAreaChart
           data={chartData}
           dataKey="latency"
-          color="#06b6d4"
+          color="#f97316"
           height={200}
         />
       </motion.div>
