@@ -228,7 +228,7 @@ export default function Simulation() {
               <MultiLineChart
                 data={simulationData}
                 lines={[
-                  { key: 'state', color: '#0d9488', name: 'State Score' },
+                  { key: 'state', color: '#f97316', name: 'State Score' },
                   { key: 'risk', color: '#f87171', name: 'Risk Level' },
                   { key: 'anomaly', color: '#fbbf24', name: 'Anomaly Score' },
                 ]}

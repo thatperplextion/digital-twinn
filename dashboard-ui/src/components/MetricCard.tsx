@@ -17,7 +17,7 @@ const colorClasses = {
     bg: 'from-primary-600/20 to-primary-800/10',
     border: 'border-primary-500/20',
     icon: 'text-primary-400 bg-primary-500/20',
-    glow: 'hover:shadow-neon-teal',
+    glow: 'hover:shadow-neon-orange',
     gradient: 'from-primary-500 to-primary-600',
   },
   green: {
@@ -45,7 +45,7 @@ const colorClasses = {
     bg: 'from-accent-600/20 to-accent-800/10',
     border: 'border-accent-500/20',
     icon: 'text-accent-400 bg-accent-500/20',
-    glow: 'hover:shadow-neon-cyan',
+    glow: 'hover:shadow-neon-rose',
     gradient: 'from-accent-500 to-accent-600',
   },
 }
