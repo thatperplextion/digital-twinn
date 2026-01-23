@@ -104,7 +104,7 @@ public class AnomalyDetectionService {
                     anomalyScore,
                     0.01,
                     "Unusual Action Detected",
-                    String.format("Action '%s' is rare (%.2f%% of history)", currentAction, actionFrequencyRatio * 100),
+                    "Action '%s' is rare (%.2f%% of history)".formatted(currentAction, actionFrequencyRatio * 100),
                     List.of(currentAction),
                     List.of("First occurrence of action type", "Pattern break from normal behavior"),
                     event.getId()
@@ -127,7 +127,7 @@ public class AnomalyDetectionService {
                 return Optional.empty();
             }
             
-            String currentHour = String.format("%02d", 
+            String currentHour = "%02d".formatted(
                 event.getTimestamp().atZone(java.time.ZoneId.systemDefault()).getHour());
             
             // Check if activity during dormant period
@@ -139,7 +139,7 @@ public class AnomalyDetectionService {
                     0.7,
                     0.0,
                     "Activity During Dormant Period",
-                    String.format("Activity detected at hour %s, which is typically dormant", currentHour),
+                    "Activity detected at hour %s, which is typically dormant".formatted(currentHour),
                     List.of("timestamp", "activity_period"),
                     List.of("Activity outside normal hours", "Potential unauthorized access"),
                     event.getId()
@@ -163,7 +163,7 @@ public class AnomalyDetectionService {
                     Math.min(1.0, deviation / 5),
                     avgActivity * 2,
                     "Unusual Activity Spike",
-                    String.format("Activity at hour %s is %.1fx above average", currentHour, deviation),
+                    "Activity at hour %s is %.1fx above average".formatted(currentHour, deviation),
                     List.of("hourly_activity"),
                     List.of("Sudden increase in activity"),
                     event.getId()
@@ -223,7 +223,7 @@ public class AnomalyDetectionService {
                     anomalyScore,
                     Z_SCORE_THRESHOLD,
                     "Statistical Outlier Detected",
-                    String.format("Value %.2f has Z-score of %.2f (threshold: %.1f)", value, zScore, Z_SCORE_THRESHOLD),
+                    "Value %.2f has Z-score of %.2f (threshold: %.1f)".formatted(value, zScore, Z_SCORE_THRESHOLD),
                     List.of("numeric_value"),
                     List.of("Value significantly deviates from historical distribution"),
                     event.getId()
@@ -269,7 +269,7 @@ public class AnomalyDetectionService {
                         0.6,
                         0.02,
                         "Unusual Action Sequence",
-                        String.format("Sequence '%s' is rare or new", newPair),
+                        "Sequence '%s' is rare or new".formatted(newPair),
                         List.of("action_sequence"),
                         List.of("New pattern detected", "Deviation from established sequences"),
                         event.getId()
@@ -297,7 +297,7 @@ public class AnomalyDetectionService {
                     metrics.getRiskScore(),
                     0.8,
                     "Critical Risk Level",
-                    String.format("Risk score (%.2f) exceeds critical threshold (0.80)", metrics.getRiskScore()),
+                    "Risk score (%.2f) exceeds critical threshold (0.80)".formatted(metrics.getRiskScore()),
                     List.of("risk_score"),
                     List.of("Multiple risk factors combined"),
                     event.getId()
@@ -314,7 +314,7 @@ public class AnomalyDetectionService {
                     Math.abs(metrics.getActivityScore() - 0.5) * 2,
                     0.95,
                     issue + " Detected",
-                    String.format("Activity score %.2f indicates %s", metrics.getActivityScore(), issue.toLowerCase()),
+                    "Activity score %.2f indicates %s".formatted(metrics.getActivityScore(), issue.toLowerCase()),
                     List.of("activity_score"),
                     List.of("Extreme activity level"),
                     event.getId()
@@ -342,7 +342,7 @@ public class AnomalyDetectionService {
                     Math.abs(trendDirection),
                     0.3,
                     "Behavioral Drift Detected",
-                    String.format("Behavior trend is %s (%.2f)", direction, trendDirection),
+                    "Behavior trend is %s (%.2f)".formatted(direction, trendDirection),
                     List.of("trend_direction"),
                     List.of("Gradual shift in behavior patterns"),
                     null
@@ -421,8 +421,8 @@ public class AnomalyDetectionService {
         // Look for common numeric fields
         for (String key : List.of("value", "reading", "measurement", "score", "count")) {
             Object val = payload.get(key);
-            if (val instanceof Number) {
-                return ((Number) val).doubleValue();
+            if (val instanceof Number number) {
+                return number.doubleValue();
             }
         }
         

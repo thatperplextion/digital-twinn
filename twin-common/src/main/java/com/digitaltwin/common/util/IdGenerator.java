@@ -31,9 +31,9 @@ public final class IdGenerator {
      * Generate a time-based ID
      */
     public static String generateTimeBasedId(String prefix) {
-        return String.format("%s-%d-%04d", 
-            prefix, 
-            Instant.now().toEpochMilli(), 
+        return "%s-%d-%04d".formatted(
+            prefix,
+            Instant.now().toEpochMilli(),
             SEQUENCE.incrementAndGet() % 10000);
     }
     
