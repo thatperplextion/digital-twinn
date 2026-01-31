@@ -43,14 +43,14 @@ jobs:
         run: ./mvnw test
 
       - name: Upload test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: always()
         with:
           name: java-test-results
           path: '**/target/surefire-reports/*.xml'
 
       - name: Upload JARs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: java-artifacts
           path: |
@@ -91,7 +91,7 @@ jobs:
         run: npm run build
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: frontend-build
           path: dashboard-ui/dist
