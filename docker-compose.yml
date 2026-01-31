@@ -300,6 +300,20 @@ services:
     networks:
       - dt-network
 
+  # ==================== Distributed Tracing ====================
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.51
+    container_name: dt-jaeger
+    ports:
+      - "16686:16686"   # Jaeger UI
+      - "4317:4317"     # OTLP gRPC
+      - "4318:4318"     # OTLP HTTP
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    networks:
+      - dt-network
+
   grafana:
     image: grafana/grafana:10.1.0
     container_name: dt-grafana
@@ -353,3 +367,4 @@ volumes:
   postgres-data:
   prometheus-data:
   grafana-data:
+  jaeger-data:
