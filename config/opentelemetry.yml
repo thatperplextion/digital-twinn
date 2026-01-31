@@ -1,0 +1,122 @@
+# ============================================
+# OpenTelemetry Configuration
+# Digital Twin Platform
+# ============================================
+
+# Common configuration for all services
+common: &common
+  # OTLP Exporter settings
+  otel_exporter_otlp_endpoint: "http://jaeger:4317"
+  otel_exporter_otlp_protocol: "grpc"
+  
+  # Service namespace
+  otel_service_namespace: "digital-twin"
+  
+  # Resource attributes
+  otel_resource_attributes: "deployment.environment=production"
+
+# ==================== Instrumentation Settings ====================
+
+instrumentation:
+  # Trace sampling (1.0 = 100%, 0.1 = 10%)
+  trace_sampling_ratio: 1.0
+  
+  # Enable/disable specific instrumentations
+  enabled:
+    - http
+    - kafka
+    - redis
+    - jdbc
+    - spring
+    - reactor
+  
+  # Span limits
+  max_attribute_length: 2048
+  max_attribute_count: 128
+  max_events_per_span: 128
+  max_links_per_span: 128
+
+# ==================== Service-Specific Configurations ====================
+
+services:
+  event-gateway:
+    service_name: "dt-event-gateway"
+    attributes:
+      service.version: "1.0.0"
+      service.component: "ingestion"
+    
+  state-engine:
+    service_name: "dt-state-engine"
+    attributes:
+      service.version: "1.0.0"
+      service.component: "state-management"
+    
+  prediction-engine:
+    service_name: "dt-prediction-engine"
+    attributes:
+      service.version: "1.0.0"
+      service.component: "ml-predictions"
+    
+  anomaly-engine:
+    service_name: "dt-anomaly-engine"
+    attributes:
+      service.version: "1.0.0"
+      service.component: "anomaly-detection"
+    
+  action-engine:
+    service_name: "dt-action-engine"
+    attributes:
+      service.version: "1.0.0"
+      service.component: "automation"
+    
+  dashboard-api:
+    service_name: "dt-dashboard-api"
+    attributes:
+      service.version: "1.0.0"
+      service.component: "api-gateway"
+
+  ml-service:
+    service_name: "dt-ml-service"
+    attributes:
+      service.version: "1.0.0"
+      service.component: "machine-learning"
+
+# ==================== Propagation ====================
+
+propagation:
+  # W3C Trace Context (default)
+  - tracecontext
+  # W3C Baggage
+  - baggage
+
+# ==================== Metrics Configuration ====================
+
+metrics:
+  enabled: true
+  export_interval_ms: 60000
+  
+  # Histogram buckets for latency metrics
+  http_latency_buckets:
+    - 5
+    - 10
+    - 25
+    - 50
+    - 75
+    - 100
+    - 250
+    - 500
+    - 750
+    - 1000
+    - 2500
+    - 5000
+    - 7500
+    - 10000
+
+# ==================== Logging Configuration ====================
+
+logging:
+  # Inject trace context into logs
+  inject_trace_context: true
+  
+  # Log level for OpenTelemetry SDK
+  sdk_log_level: "INFO"
