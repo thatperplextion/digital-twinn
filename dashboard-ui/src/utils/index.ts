@@ -2,33 +2,55 @@
  * Utility Functions for Digital Twin Dashboard
  */
 
-import { format, formatDistanceToNow, parseISO, isValid } from 'date-fns';
-import { DATE_FORMATS } from '../constants';
-
 // ==================== Date Utilities ====================
 
 /**
- * Format a date string for display
+ * Parse a date string to Date object
+ */
+function parseDate(date: string | Date): Date {
+  return typeof date === 'string' ? new Date(date) : date;
+}
+
+/**
+ * Check if a date is valid
+ */
+function isValidDate(date: Date): boolean {
+  return date instanceof Date && !isNaN(date.getTime());
+}
+
+/**
+ * Format a date string for display (e.g., "Jan 15, 2024")
  */
 export function formatDate(date: string | Date | null | undefined): string {
   if (!date) return 'N/A';
   
-  const parsed = typeof date === 'string' ? parseISO(date) : date;
-  if (!isValid(parsed)) return 'Invalid date';
+  const parsed = parseDate(date);
+  if (!isValidDate(parsed)) return 'Invalid date';
   
-  return format(parsed, DATE_FORMATS.DISPLAY);
+  return parsed.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
 }
 
 /**
- * Format a date string with time
+ * Format a date string with time (e.g., "Jan 15, 2024 10:30 AM")
  */
 export function formatDateTime(date: string | Date | null | undefined): string {
   if (!date) return 'N/A';
   
-  const parsed = typeof date === 'string' ? parseISO(date) : date;
-  if (!isValid(parsed)) return 'Invalid date';
+  const parsed = parseDate(date);
+  if (!isValidDate(parsed)) return 'Invalid date';
   
-  return format(parsed, DATE_FORMATS.DISPLAY_WITH_TIME);
+  return parsed.toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  });
 }
 
 /**
@@ -37,22 +59,39 @@ export function formatDateTime(date: string | Date | null | undefined): string {
 export function formatRelativeTime(date: string | Date | null | undefined): string {
   if (!date) return 'N/A';
   
-  const parsed = typeof date === 'string' ? parseISO(date) : date;
-  if (!isValid(parsed)) return 'Invalid date';
+  const parsed = parseDate(date);
+  if (!isValidDate(parsed)) return 'Invalid date';
   
-  return formatDistanceToNow(parsed, { addSuffix: true });
+  const now = new Date();
+  const diffMs = now.getTime() - parsed.getTime();
+  const diffSec = Math.floor(diffMs / 1000);
+  const diffMin = Math.floor(diffSec / 60);
+  const diffHour = Math.floor(diffMin / 60);
+  const diffDay = Math.floor(diffHour / 24);
+  
+  if (diffSec < 60) return 'just now';
+  if (diffMin < 60) return `${diffMin} minute${diffMin > 1 ? 's' : ''} ago`;
+  if (diffHour < 24) return `${diffHour} hour${diffHour > 1 ? 's' : ''} ago`;
+  if (diffDay < 30) return `${diffDay} day${diffDay > 1 ? 's' : ''} ago`;
+  
+  return formatDate(parsed);
 }
 
 /**
- * Format time only (HH:mm:ss)
+ * Format time only (e.g., "10:30:45 AM")
  */
 export function formatTime(date: string | Date | null | undefined): string {
   if (!date) return 'N/A';
   
-  const parsed = typeof date === 'string' ? parseISO(date) : date;
-  if (!isValid(parsed)) return 'Invalid date';
+  const parsed = parseDate(date);
+  if (!isValidDate(parsed)) return 'Invalid date';
   
-  return format(parsed, DATE_FORMATS.TIME_ONLY);
+  return parsed.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true,
+  });
 }
 
 // ==================== Number Utilities ====================

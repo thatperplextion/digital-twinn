@@ -190,7 +190,7 @@ export const telemetryApi = {
    * Stream telemetry data (returns WebSocket URL)
    */
   getStreamUrl: (twinId: string): string =>
-    `${API_CONFIG.WS_BASE_URL}/telemetry/${twinId}/stream`,
+    `${API_CONFIG.WS_URL}/telemetry/${twinId}/stream`,
 };
 
 // ==================== Prediction API ====================

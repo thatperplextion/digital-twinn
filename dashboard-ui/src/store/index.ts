@@ -1,6 +1,11 @@
-import { create, StateCreator } from 'zustand'
-import { persist, PersistOptions } from 'zustand/middleware'
+// Zustand store declarations
+// Note: Run `npm install` in dashboard-ui to install zustand and resolve module errors
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import { DigitalTwin, TwinSnapshot, Prediction, Anomaly, Action, StreamUpdate, DashboardStats } from '../types'
+
+// Type helper for set function
+type SetState<T> = (partial: T | Partial<T> | ((state: T) => T | Partial<T>)) => void
 
 // ==================== Dashboard Store ====================
 
@@ -13,7 +18,7 @@ interface DashboardState {
   setError: (error: string | null) => void
 }
 
-export const useDashboardStore = create<DashboardState>()((set) => ({
+export const useDashboardStore = create<DashboardState>()((set: SetState<DashboardState>) => ({
   stats: null,
   isLoading: false,
   error: null,
@@ -38,7 +43,7 @@ interface TwinState {
   setError: (error: string | null) => void
 }
 
-export const useTwinStore = create<TwinState>()((set) => ({
+export const useTwinStore = create<TwinState>()((set: SetState<TwinState>) => ({
   twins: [],
   selectedTwin: null,
   isLoading: false,
@@ -69,7 +74,7 @@ interface PredictionState {
   setError: (error: string | null) => void
 }
 
-export const usePredictionStore = create<PredictionState>()((set) => ({
+export const usePredictionStore = create<PredictionState>()((set: SetState<PredictionState>) => ({
   predictions: [],
   isLoading: false,
   error: null,
@@ -98,7 +103,7 @@ interface AnomalyState {
   setError: (error: string | null) => void
 }
 
-export const useAnomalyStore = create<AnomalyState>()((set) => ({
+export const useAnomalyStore = create<AnomalyState>()((set: SetState<AnomalyState>) => ({
   anomalies: [],
   activeCount: 0,
   isLoading: false,
@@ -139,7 +144,7 @@ interface ActionState {
   setError: (error: string | null) => void
 }
 
-export const useActionStore = create<ActionState>()((set) => ({
+export const useActionStore = create<ActionState>()((set: SetState<ActionState>) => ({
   actions: [],
   pendingCount: 0,
   isLoading: false,
@@ -178,7 +183,7 @@ interface StreamState {
   setConnectionError: (error: string | null) => void
 }
 
-export const useStreamStore = create<StreamState>()((set) => ({
+export const useStreamStore = create<StreamState>()((set: SetState<StreamState>) => ({
   updates: [],
   isConnected: false,
   connectionError: null,
@@ -218,7 +223,7 @@ type UIStatePersist = Pick<UIState, 'theme' | 'sidebarOpen'>
 
 export const useUIStore = create<UIState>()(
   persist(
-    (set) => ({
+    (set: SetState<UIState>) => ({
       sidebarOpen: true,
       theme: 'dark',
       activeView: 'dashboard',

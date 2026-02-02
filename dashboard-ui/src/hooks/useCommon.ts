@@ -2,6 +2,7 @@
  * Custom React Hooks for Digital Twin Dashboard
  */
 
+import type { RefObject } from 'react';
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { debounce, throttle } from '../utils';
 
@@ -132,7 +133,7 @@ export function useBreakpoint() {
  * Detect clicks outside of an element
  */
 export function useOnClickOutside<T extends HTMLElement>(
-  ref: React.RefObject<T>,
+  ref: RefObject<T>,
   handler: (event: MouseEvent | TouchEvent) => void
 ): void {
   useEffect(() => {
@@ -250,7 +251,7 @@ export function useToggle(
   initialValue = false
 ): [boolean, () => void, (value: boolean) => void] {
   const [value, setValue] = useState(initialValue);
-  const toggle = useCallback(() => setValue((v) => !v), []);
+  const toggle = useCallback(() => setValue((v: boolean) => !v), []);
   return [value, toggle, setValue];
 }
 
