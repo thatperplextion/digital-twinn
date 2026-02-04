@@ -14,34 +14,39 @@ interface MetricCardProps {
 
 const colorClasses = {
   blue: {
-    bg: 'from-blue-600/20 to-blue-800/20',
-    border: 'border-blue-500/30',
-    icon: 'text-blue-400 bg-blue-500/20',
-    glow: 'shadow-blue-500/20',
+    bg: 'from-primary-600/20 to-primary-800/10',
+    border: 'border-primary-500/20',
+    icon: 'text-primary-400 bg-primary-500/20',
+    glow: 'hover:shadow-neon-orange',
+    gradient: 'from-primary-500 to-primary-600',
   },
   green: {
-    bg: 'from-green-600/20 to-green-800/20',
-    border: 'border-green-500/30',
-    icon: 'text-green-400 bg-green-500/20',
-    glow: 'shadow-green-500/20',
+    bg: 'from-success-600/20 to-success-800/10',
+    border: 'border-success-500/20',
+    icon: 'text-success-400 bg-success-500/20',
+    glow: 'hover:shadow-neon-green',
+    gradient: 'from-success-500 to-success-600',
   },
   yellow: {
-    bg: 'from-yellow-600/20 to-yellow-800/20',
-    border: 'border-yellow-500/30',
-    icon: 'text-yellow-400 bg-yellow-500/20',
-    glow: 'shadow-yellow-500/20',
+    bg: 'from-warning-600/20 to-warning-800/10',
+    border: 'border-warning-500/20',
+    icon: 'text-warning-400 bg-warning-500/20',
+    glow: 'hover:shadow-glow-md',
+    gradient: 'from-warning-500 to-warning-600',
   },
   red: {
-    bg: 'from-red-600/20 to-red-800/20',
-    border: 'border-red-500/30',
-    icon: 'text-red-400 bg-red-500/20',
-    glow: 'shadow-red-500/20',
+    bg: 'from-danger-600/20 to-danger-800/10',
+    border: 'border-danger-500/20',
+    icon: 'text-danger-400 bg-danger-500/20',
+    glow: 'hover:shadow-neon-red',
+    gradient: 'from-danger-500 to-danger-600',
   },
   purple: {
-    bg: 'from-purple-600/20 to-purple-800/20',
-    border: 'border-purple-500/30',
-    icon: 'text-purple-400 bg-purple-500/20',
-    glow: 'shadow-purple-500/20',
+    bg: 'from-accent-600/20 to-accent-800/10',
+    border: 'border-accent-500/20',
+    icon: 'text-accent-400 bg-accent-500/20',
+    glow: 'hover:shadow-neon-rose',
+    gradient: 'from-accent-500 to-accent-600',
   },
 }
 
@@ -59,29 +64,39 @@ export default function MetricCard({
 
   return (
     <motion.div
-      whileHover={{ scale: 1.02, y: -2 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ scale: 1.02, y: -4 }}
+      transition={{ duration: 0.3 }}
       className={clsx(
-        'relative rounded-2xl p-6 glass border overflow-hidden',
+        'relative rounded-2xl p-6 glass-card overflow-hidden group',
         colors.border,
-        `shadow-lg ${colors.glow}`
+        colors.glow,
+        'transition-shadow duration-300'
       )}
     >
+      {/* Gradient top border */}
+      <div className={clsx('absolute top-0 left-0 right-0 h-1 bg-gradient-to-r opacity-60', colors.gradient)} />
+      
       {/* Background gradient */}
-      <div className={clsx('absolute inset-0 bg-gradient-to-br opacity-50', colors.bg)} />
+      <div className={clsx('absolute inset-0 bg-gradient-to-br opacity-40 transition-opacity group-hover:opacity-60', colors.bg)} />
 
       {/* Content */}
       <div className="relative z-10">
         <div className="flex items-start justify-between">
           <div>
-            <p className="text-sm font-medium text-slate-400">{title}</p>
-            <p className="mt-2 text-3xl font-bold text-white">{value}</p>
+            <p className="text-sm font-medium text-slate-500">{title}</p>
+            <p className="mt-2 text-3xl font-bold text-white tracking-tight">{value}</p>
             {subtitle && (
               <p className="mt-1 text-xs text-slate-500">{subtitle}</p>
             )}
           </div>
-          <div className={clsx('p-3 rounded-xl', colors.icon)}>
+          <motion.div 
+            whileHover={{ rotate: 5, scale: 1.1 }}
+            className={clsx('p-3 rounded-xl backdrop-blur-sm', colors.icon)}
+          >
             <Icon className="h-6 w-6" />
-          </div>
+          </motion.div>
         </div>
 
         {(change !== undefined || changeLabel) && (
@@ -89,9 +104,9 @@ export default function MetricCard({
             {change !== undefined && (
               <span
                 className={clsx(
-                  'inline-flex items-center text-sm font-medium',
-                  trend === 'up' && 'text-green-400',
-                  trend === 'down' && 'text-red-400',
+                  'inline-flex items-center text-sm font-semibold',
+                  trend === 'up' && 'text-success-400',
+                  trend === 'down' && 'text-danger-400',
                   trend === 'neutral' && 'text-slate-400'
                 )}
               >
@@ -107,8 +122,13 @@ export default function MetricCard({
         )}
       </div>
 
-      {/* Decorative elements */}
-      <div className="absolute -right-4 -bottom-4 h-24 w-24 rounded-full bg-white/5 blur-2xl" />
+      {/* Decorative glow orb */}
+      <div className={clsx('absolute -right-6 -bottom-6 h-28 w-28 rounded-full blur-3xl opacity-30 transition-opacity group-hover:opacity-50', colors.icon.replace('text-', 'bg-').replace('bg-', 'bg-'))} />
+      
+      {/* Shimmer effect on hover */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+        <div className="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+      </div>
     </motion.div>
   )
 }

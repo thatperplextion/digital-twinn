@@ -122,7 +122,7 @@ public class ActionOrchestrationService {
                 }
                 
                 action.setStatus(Action.ActionStatus.CANCELLED);
-                action.getAuditLog().add(String.format("[%s] Cancelled: %s", Instant.now(), reason));
+                action.getAuditLog().add("[%s] Cancelled: %s".formatted(Instant.now(), reason));
                 
                 return actionRepository.save(action);
             });
@@ -310,15 +310,15 @@ public class ActionOrchestrationService {
         StringBuilder sb = new StringBuilder();
         sb.append("## Action Explanation\n\n");
         sb.append("### Trigger\n");
-        sb.append(String.format("- Type: %s\n", action.getTriggerType()));
-        sb.append(String.format("- Reason: %s\n\n", action.getTriggerReason()));
+        sb.append("- Type: %s\n".formatted(action.getTriggerType()));
+        sb.append("- Reason: %s\n\n".formatted(action.getTriggerReason()));
         sb.append("### Decision Chain\n");
         for (int i = 0; i < action.getDecisionChain().size(); i++) {
-            sb.append(String.format("%d. %s\n", i + 1, action.getDecisionChain().get(i)));
+            sb.append("%d. %s\n".formatted(i + 1, action.getDecisionChain().get(i)));
         }
         sb.append("\n### Result\n");
-        sb.append(String.format("- Status: %s\n", action.getStatus()));
-        sb.append(String.format("- Outcome: %s\n", action.getResult()));
+        sb.append("- Status: %s\n".formatted(action.getStatus()));
+        sb.append("- Outcome: %s\n".formatted(action.getResult()));
         return sb.toString();
     }
 }

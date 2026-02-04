@@ -139,24 +139,35 @@ export default function Dashboard() {
   }, [])
 
   const healthDistribution = [
-    { name: 'Healthy', value: stats.healthyTwins, color: '#22c55e' },
-    { name: 'Warning', value: stats.warningTwins, color: '#f59e0b' },
-    { name: 'Critical', value: stats.criticalTwins, color: '#ef4444' },
+    { name: 'Healthy', value: stats.healthyTwins, color: '#34d399' },
+    { name: 'Warning', value: stats.warningTwins, color: '#fbbf24' },
+    { name: 'Critical', value: stats.criticalTwins, color: '#f87171' },
   ]
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-center justify-between"
+      >
         <div>
-          <h1 className="text-2xl font-bold text-white">Command Center</h1>
-          <p className="text-slate-400 mt-1">Real-time digital twin monitoring and intelligence</p>
+          <h1 className="text-3xl font-bold gradient-text">Command Center</h1>
+          <p className="text-slate-500 mt-1">Real-time digital twin monitoring and intelligence</p>
         </div>
-        <div className="flex items-center gap-2 px-4 py-2 glass rounded-xl">
-          <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
-          <span className="text-sm font-medium text-green-400">All Systems Operational</span>
-        </div>
-      </div>
+        <motion.div 
+          animate={{ boxShadow: ['0 0 0 rgba(52, 211, 153, 0)', '0 0 20px rgba(52, 211, 153, 0.3)', '0 0 0 rgba(52, 211, 153, 0)'] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="flex items-center gap-2 px-4 py-2.5 glass-card rounded-xl"
+        >
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-success-400" />
+          </span>
+          <span className="text-sm font-medium text-success-400">All Systems Operational</span>
+        </motion.div>
+      </motion.div>
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -205,20 +216,25 @@ export default function Dashboard() {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Event Stream Chart */}
-        <div className="lg:col-span-2 glass rounded-2xl p-6 border border-slate-700/50">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="lg:col-span-2 glass-card p-6"
+        >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-white">Real-Time Event Stream</h3>
-            <div className="flex items-center gap-2 text-xs">
-              <span className="flex items-center gap-1 text-blue-400">
-                <span className="h-2 w-2 rounded-full bg-blue-400" />
+            <h3 className="font-semibold gradient-text">Real-Time Event Stream</h3>
+            <div className="flex items-center gap-3 text-xs">
+              <span className="flex items-center gap-1.5 text-primary-400">
+                <span className="h-2 w-2 rounded-full bg-primary-400" />
                 Events
               </span>
-              <span className="flex items-center gap-1 text-green-400">
-                <span className="h-2 w-2 rounded-full bg-green-400" />
+              <span className="flex items-center gap-1.5 text-success-400">
+                <span className="h-2 w-2 rounded-full bg-success-400" />
                 Predictions
               </span>
-              <span className="flex items-center gap-1 text-red-400">
-                <span className="h-2 w-2 rounded-full bg-red-400" />
+              <span className="flex items-center gap-1.5 text-danger-400">
+                <span className="h-2 w-2 rounded-full bg-danger-400" />
                 Anomalies
               </span>
             </div>
@@ -226,81 +242,96 @@ export default function Dashboard() {
           <MultiLineChart
             data={chartData}
             lines={[
-              { key: 'events', color: '#3b82f6', name: 'Events' },
-              { key: 'predictions', color: '#22c55e', name: 'Predictions' },
-              { key: 'anomalies', color: '#ef4444', name: 'Anomalies' },
+              { key: 'events', color: '#f97316', name: 'Events' },
+              { key: 'predictions', color: '#34d399', name: 'Predictions' },
+              { key: 'anomalies', color: '#f87171', name: 'Anomalies' },
             ]}
             height={280}
           />
-        </div>
+        </motion.div>
 
         {/* Health Distribution */}
-        <div className="glass rounded-2xl p-6 border border-slate-700/50">
-          <h3 className="font-semibold text-white mb-4">Twin Health Distribution</h3>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="glass-card p-6"
+        >
+          <h3 className="font-semibold gradient-text mb-4">Twin Health Distribution</h3>
           <PieChartComponent data={healthDistribution} height={200} showLabels={false} />
           <div className="mt-4 space-y-2">
             {healthDistribution.map(item => (
-              <div key={item.name} className="flex items-center justify-between">
+              <div key={item.name} className="flex items-center justify-between p-2 rounded-lg hover:bg-white/5 transition-colors">
                 <div className="flex items-center gap-2">
-                  <span className="h-3 w-3 rounded-full" style={{ backgroundColor: item.color }} />
+                  <span className="h-3 w-3 rounded-full shadow-lg" style={{ backgroundColor: item.color, boxShadow: `0 0 10px ${item.color}40` }} />
                   <span className="text-sm text-slate-400">{item.name}</span>
                 </div>
-                <span className="text-sm font-medium text-white">{item.value}</span>
+                <span className="text-sm font-semibold text-white">{item.value}</span>
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* System Metrics & Active Twins */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* System Performance Gauges */}
-        <div className="glass rounded-2xl p-6 border border-slate-700/50">
-          <h3 className="font-semibold text-white mb-6">System Performance</h3>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="glass-card p-6"
+        >
+          <h3 className="font-semibold gradient-text mb-6">System Performance</h3>
           <div className="grid grid-cols-2 gap-6">
             <MetricGauge
               value={stats.systemHealth}
               title="System Health"
-              color="#22c55e"
+              color="#34d399"
               size="sm"
             />
             <MetricGauge
               value={stats.predictionAccuracy}
               title="Prediction Acc."
-              color="#8b5cf6"
+              color="#fb923c"
               size="sm"
             />
             <div className="col-span-2 space-y-4">
               <div>
                 <div className="flex justify-between text-sm mb-1">
-                  <span className="text-slate-400">CPU Usage</span>
-                  <span className="text-white">67%</span>
+                  <span className="text-slate-500">CPU Usage</span>
+                  <span className="text-white font-medium">67%</span>
                 </div>
                 <ProgressBar value={67} color="blue" showLabel={false} />
               </div>
               <div>
                 <div className="flex justify-between text-sm mb-1">
-                  <span className="text-slate-400">Memory</span>
-                  <span className="text-white">54%</span>
+                  <span className="text-slate-500">Memory</span>
+                  <span className="text-white font-medium">54%</span>
                 </div>
                 <ProgressBar value={54} color="green" showLabel={false} />
               </div>
               <div>
                 <div className="flex justify-between text-sm mb-1">
-                  <span className="text-slate-400">Kafka Lag</span>
-                  <span className="text-white">12ms</span>
+                  <span className="text-slate-500">Kafka Lag</span>
+                  <span className="text-white font-medium">12ms</span>
                 </div>
                 <ProgressBar value={12} max={100} color="purple" showLabel={false} />
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Active Twins */}
-        <div className="lg:col-span-2 glass rounded-2xl p-6 border border-slate-700/50">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="lg:col-span-2 glass-card p-6"
+        >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-white">Active Digital Twins</h3>
-            <a href="/twins" className="text-sm text-blue-400 hover:text-blue-300 transition-colors">
+            <h3 className="font-semibold gradient-text">Active Digital Twins</h3>
+            <a href="/twins" className="text-sm text-primary-400 hover:text-primary-300 transition-colors font-medium">
               View All →
             </a>
           </div>
@@ -309,14 +340,19 @@ export default function Dashboard() {
               <TwinCard key={twin.id} twin={twin} compact />
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Latency Chart */}
-      <div className="glass rounded-2xl p-6 border border-slate-700/50">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        className="glass-card p-6"
+      >
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold text-white">Processing Latency (ms)</h3>
-          <div className="flex items-center gap-2">
+          <h3 className="font-semibold gradient-text">Processing Latency (ms)</h3>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg glass-light">
             <ClockIcon className="h-4 w-4 text-slate-400" />
             <span className="text-sm text-slate-400">Target: &lt;50ms</span>
           </div>
@@ -324,36 +360,42 @@ export default function Dashboard() {
         <GradientAreaChart
           data={chartData}
           dataKey="latency"
-          color="#8b5cf6"
+          color="#f97316"
           height={200}
         />
-      </div>
+      </motion.div>
 
       {/* Recent Activity Feed */}
-      <div className="glass rounded-2xl p-6 border border-slate-700/50">
-        <h3 className="font-semibold text-white mb-4">Recent Activity</h3>
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+        className="glass-card p-6"
+      >
+        <h3 className="font-semibold gradient-text mb-4">Recent Activity</h3>
         <div className="space-y-3">
           {[
-            { type: 'prediction', message: 'Next action predicted for TWIN-001: maintenance_check', time: '2s ago', color: 'text-purple-400' },
-            { type: 'anomaly', message: 'Behavioral anomaly detected in TWIN-002', time: '15s ago', color: 'text-red-400' },
-            { type: 'action', message: 'Auto-mitigation triggered for TWIN-004', time: '32s ago', color: 'text-yellow-400' },
-            { type: 'state', message: 'TWIN-003 transitioned from IDLE to ACTIVE', time: '45s ago', color: 'text-blue-400' },
-            { type: 'event', message: '1,247 events processed in last second', time: '1m ago', color: 'text-green-400' },
+            { type: 'prediction', message: 'Next action predicted for TWIN-001: maintenance_check', time: '2s ago', color: 'text-accent-400', bgColor: 'bg-accent-400' },
+            { type: 'anomaly', message: 'Behavioral anomaly detected in TWIN-002', time: '15s ago', color: 'text-danger-400', bgColor: 'bg-danger-400' },
+            { type: 'action', message: 'Auto-mitigation triggered for TWIN-004', time: '32s ago', color: 'text-warning-400', bgColor: 'bg-warning-400' },
+            { type: 'state', message: 'TWIN-003 transitioned from IDLE to ACTIVE', time: '45s ago', color: 'text-primary-400', bgColor: 'bg-primary-400' },
+            { type: 'event', message: '1,247 events processed in last second', time: '1m ago', color: 'text-success-400', bgColor: 'bg-success-400' },
           ].map((activity, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="flex items-center gap-3 p-3 rounded-lg bg-slate-800/30 hover:bg-slate-800/50 transition-colors"
+              transition={{ delay: 0.6 + index * 0.1 }}
+              whileHover={{ x: 4 }}
+              className="flex items-center gap-3 p-3 rounded-xl glass-light hover:border-primary-500/20 border border-transparent transition-all cursor-pointer"
             >
-              <span className={`h-2 w-2 rounded-full ${activity.color.replace('text-', 'bg-')}`} />
+              <span className={`h-2.5 w-2.5 rounded-full ${activity.bgColor} shadow-lg`} style={{ boxShadow: `0 0 10px currentColor` }} />
               <span className="flex-1 text-sm text-slate-300">{activity.message}</span>
-              <span className="text-xs text-slate-500">{activity.time}</span>
+              <span className="text-xs text-slate-500 font-medium">{activity.time}</span>
             </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }

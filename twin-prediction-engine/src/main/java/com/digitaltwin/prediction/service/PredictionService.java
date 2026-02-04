@@ -112,7 +112,7 @@ public class PredictionService {
                     "sequential_pattern", 0.35,
                     "temporal_pattern", 0.25
                 ))
-                .explanation(String.format("Based on %d recent actions, '%s' is predicted with %.1f%% confidence",
+                .explanation("Based on %d recent actions, '%s' is predicted with %.1f%% confidence".formatted(
                     recentActions.size(), predictedAction, confidence * 100))
                 .modelId("action-predictor-v1")
                 .modelVersion("1.0.0")
@@ -187,7 +187,7 @@ public class PredictionService {
                     "current_state", 0.3,
                     "state_duration", 0.2
                 ))
-                .explanation(String.format("From '%s', likely to transition to '%s' with %.1f%% probability",
+                .explanation("From '%s', likely to transition to '%s' with %.1f%% probability".formatted(
                     currentState, predictedState, confidence * 100))
                 .modelId("state-predictor-v1")
                 .modelVersion("1.0.0")
@@ -247,7 +247,7 @@ public class PredictionService {
                 .horizonMs(Duration.ofHours(1).toMillis())
                 .contributingFactors(riskFactors)
                 .featureImportance(factorWeights)
-                .explanation(String.format("Risk projected at %.1f%% (%s level) based on %d factors",
+                .explanation("Risk projected at %.1f%% (%s level) based on %d factors".formatted(
                     projectedRisk * 100, riskLevel, riskFactors.size()))
                 .modelId("risk-forecaster-v1")
                 .modelVersion("1.0.0")
@@ -296,7 +296,7 @@ public class PredictionService {
                 .targetTime(Instant.now().plus(Duration.ofHours(24)))
                 .horizonMs(Duration.ofHours(24).toMillis())
                 .contributingFactors(List.of("Health score", "Alert count", "Historical patterns"))
-                .explanation(String.format("%.1f%% probability of failure within 24 hours",
+                .explanation("%.1f%% probability of failure within 24 hours".formatted(
                     failureProbability * 100))
                 .modelId("failure-predictor-v1")
                 .modelVersion("1.0.0")
@@ -330,7 +330,7 @@ public class PredictionService {
                 .targetTime(Instant.now().plus(Duration.ofHours(6)))
                 .horizonMs(Duration.ofHours(6).toMillis())
                 .contributingFactors(List.of("Activity trend", "Engagement pattern", "Performance metrics"))
-                .explanation(String.format("Behavioral trajectory: %s", trajectory))
+                .explanation("Behavioral trajectory: %s".formatted(trajectory))
                 .modelId("trajectory-predictor-v1")
                 .modelVersion("1.0.0")
                 .build();

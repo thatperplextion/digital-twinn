@@ -1,0 +1,137 @@
+# ============================================
+# Pull Request Check Workflow
+# Quick validation for PRs
+# ============================================
+
+name: PR Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  # ==================== Quick Validation ====================
+  validate:
+    name: Validate PR
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check commit messages
+        run: |
+          echo "Checking commit message format..."
+          # Add conventional commit checks if needed
+
+      - name: Check for merge conflicts
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          git merge-tree $(git merge-base HEAD origin/${{ github.base_ref }}) HEAD origin/${{ github.base_ref }} || echo "Potential conflicts detected"
+
+  # ==================== Java Build Check ====================
+  java-check:
+    name: Java Build Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Compile and run tests
+        run: ./mvnw clean verify
+
+      - name: Check code coverage
+        run: |
+          echo "Code coverage check..."
+          # Add JaCoCo or similar coverage tool integration
+
+  # ==================== Frontend Check ====================
+  frontend-check:
+    name: Frontend Check
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: dashboard-ui
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: dashboard-ui/package-lock.json
+
+      - name: Install and build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Type check
+        run: npm run type-check --if-present
+
+  # ==================== Python Check ====================
+  python-check:
+    name: Python Check
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: ml-service
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: ml-service/requirements.txt
+
+      - name: Install and lint
+        run: |
+          pip install -r requirements.txt
+          pip install flake8 black
+          flake8 . --count --select=E9,F63,F7,F82 --show-source
+          black --check . || true
+
+  # ==================== Docker Build Check ====================
+  docker-check:
+    name: Docker Build Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Validate Dockerfiles
+        run: |
+          for dockerfile in $(find . -name "Dockerfile" -type f); do
+            echo "Validating $dockerfile..."
+            docker build --check -f "$dockerfile" "$(dirname $dockerfile)" || true
+          done
+
+      - name: Validate docker-compose
+        run: docker compose config -q
