@@ -1,3 +1,8 @@
+/**
+ * Main Application Component
+ * Defines the routing structure for the Digital Twin Dashboard
+ */
+
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import Dashboard from './pages/Dashboard'
@@ -10,6 +15,9 @@ import Simulation from './pages/Simulation'
 import Analytics from './pages/Analytics'
 import Settings from './pages/Settings'
 
+/**
+ * App component with route definitions
+ */
 function App() {
   return (
     <Layout>
