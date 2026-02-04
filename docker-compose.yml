@@ -2,6 +2,9 @@
 # Docker Compose for Digital Twin Platform
 # ============================================
 # Usage: docker-compose up -d
+# Health Check: docker-compose ps
+# Logs: docker-compose logs -f [service]
+# Stop: docker-compose down
 # ============================================
 
 version: '3.8'

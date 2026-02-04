@@ -2,14 +2,17 @@
 # Digital Twin Platform - Makefile
 # ============================================
 # Usage: make <target>
+# Run 'make help' for available commands
 # ============================================
 
-.PHONY: help build test run stop clean dev logs
+.PHONY: help build test run stop clean dev logs ui db-reset lint build-docker
 
 # Default target
 help:
+	@echo ""
 	@echo "Digital Twin Platform - Available Commands"
 	@echo "==========================================="
+	@echo ""
 	@echo "  make build       - Build all Java services"
 	@echo "  make test        - Run all tests"
 	@echo "  make run         - Start all services with Docker"
@@ -20,6 +23,7 @@ help:
 	@echo "  make ui          - Start dashboard UI in dev mode"
 	@echo "  make db-reset    - Reset database"
 	@echo "  make lint        - Run linters"
+	@echo ""
 
 # ==================== Build ====================
 

@@ -6,6 +6,7 @@
 ![Java](https://img.shields.io/badge/Java-21-orange.svg)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.0-green.svg)
 ![React](https://img.shields.io/badge/React-18.2-61dafb.svg)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.3-3178c6.svg)
 ![License](https://img.shields.io/badge/license-MIT-purple.svg)
 
 **A next-generation platform for Predictive Behavior Modeling & Decision Intelligence**

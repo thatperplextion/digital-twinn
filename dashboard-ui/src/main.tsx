@@ -1,3 +1,8 @@
+/**
+ * Application Entry Point
+ * Sets up React Query, Router, and Error Boundary
+ */
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -7,6 +12,9 @@ import App from './App'
 import ErrorBoundary from './components/ErrorBoundary'
 import './index.css'
 
+/**
+ * React Query client configuration
+ */
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
