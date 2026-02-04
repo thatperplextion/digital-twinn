@@ -1,4 +1,11 @@
--- PostgreSQL initialization script for Digital Twin Platform
+-- ============================================
+-- PostgreSQL Initialization Script
+-- Digital Twin Platform
+-- ============================================
+-- This script sets up the database schema for
+-- storing digital twins, events, predictions,
+-- anomalies, and actions.
+-- ============================================
 
 -- Create extensions
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
