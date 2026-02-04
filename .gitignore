@@ -168,3 +168,10 @@ application-local.properties
 
 # Generated files
 *.generated.*
+# ===================== Editor / IDE Temp =====================
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
