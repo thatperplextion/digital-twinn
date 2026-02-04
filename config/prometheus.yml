@@ -1,8 +1,16 @@
-# Prometheus configuration for Digital Twin Platform
+# ============================================
+# Prometheus Configuration
+# Digital Twin Platform
+# ============================================
+# Scrape interval: 15s (adjustable per job)
+# Metrics path: /actuator/prometheus
+# ============================================
 
 global:
   scrape_interval: 15s
   evaluation_interval: 15s
+  external_labels:
+    platform: 'digital-twin'
 
 alerting:
   alertmanagers:
