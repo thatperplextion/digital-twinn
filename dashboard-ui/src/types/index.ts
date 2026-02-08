@@ -220,7 +220,7 @@ export interface DashboardStats {
 
 export interface StreamUpdate {
   updateId: string
-  type: 'STATE_CHANGE' | 'PREDICTION' | 'ANOMALY' | 'ACTION' | 'METRIC_UPDATE' | 'HEALTH_CHANGE'
+  type: 'STATE_CHANGE' | 'PREDICTION' | 'ANOMALY' | 'ACTION' | 'METRIC_UPDATE' | 'HEALTH_CHANGE' | 'TWIN_UPDATED' | 'ANOMALY_DETECTED' | 'PREDICTION_GENERATED' | 'ACTION_EXECUTED' | 'STATS_UPDATE'
   twinId: string
   payload: any
   timestamp: string

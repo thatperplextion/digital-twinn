@@ -3,8 +3,6 @@ import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   ArrowLeftIcon,
-  HeartIcon,
-  SignalIcon,
   ClockIcon,
   CubeIcon,
   ChartBarIcon,
@@ -15,9 +13,7 @@ import {
   ArrowPathIcon,
 } from '@heroicons/react/24/outline'
 import { 
-  RealTimeLineChart, 
-  MultiLineChart, 
-  GradientAreaChart,
+  MultiLineChart,
   MetricGauge,
   ProgressBar,
 } from '../components/Charts'
@@ -730,7 +726,7 @@ function ActionsTab({ twinId }: { twinId: string }) {
   )
 }
 
-function ExplainabilityTab({ twin }: { twin: DigitalTwin }) {
+function ExplainabilityTab({ twin: _twin }: { twin: DigitalTwin }) {
   return (
     <div className="space-y-6">
       {/* Event Chain */}

@@ -4,7 +4,6 @@
 
 import type { RefObject } from 'react';
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { debounce, throttle } from '../utils';
 
 // ==================== useDebounce ====================
 

@@ -3,9 +3,6 @@ import { TwinSnapshot } from '../types'
 import { Link } from 'react-router-dom'
 import clsx from 'clsx'
 import {
-  HeartIcon,
-  ExclamationTriangleIcon,
-  SignalIcon,
   ChevronRightIcon,
 } from '@heroicons/react/24/outline'
 

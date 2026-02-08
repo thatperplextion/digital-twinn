@@ -3,14 +3,12 @@ import { motion } from 'framer-motion'
 import {
   BeakerIcon,
   PlayIcon,
-  PauseIcon,
   ArrowPathIcon,
-  ClockIcon,
   DocumentDuplicateIcon,
   ChartBarIcon,
 } from '@heroicons/react/24/outline'
-import { MultiLineChart, GradientAreaChart } from '../components/Charts'
-import { SimulationRequest, TwinSnapshot } from '../types'
+import { MultiLineChart } from '../components/Charts'
+import { TwinSnapshot } from '../types'
 import clsx from 'clsx'
 
 const mockTwins: { id: string; name: string }[] = [

@@ -6,7 +6,6 @@ import {
   ClockIcon,
   CheckCircleIcon,
   XCircleIcon,
-  FunnelIcon,
 } from '@heroicons/react/24/outline'
 import { GradientAreaChart, BarChartComponent } from '../components/Charts'
 import { Anomaly } from '../types'

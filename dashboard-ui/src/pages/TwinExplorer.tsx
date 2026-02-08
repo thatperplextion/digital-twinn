@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   PlusIcon,
-  FunnelIcon,
   MagnifyingGlassIcon,
   Squares2X2Icon,
   ListBulletIcon,

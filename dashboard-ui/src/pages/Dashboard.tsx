@@ -1,28 +1,21 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import {
   CubeIcon,
   SignalIcon,
   ChartBarIcon,
   ExclamationTriangleIcon,
-  BoltIcon,
   ClockIcon,
-  ArrowTrendingUpIcon,
-  ArrowTrendingDownIcon,
-  HeartIcon,
-  CpuChipIcon,
 } from '@heroicons/react/24/outline'
 import MetricCard from '../components/MetricCard'
 import TwinCard from '../components/TwinCard'
 import { 
-  RealTimeLineChart, 
   MultiLineChart, 
   GradientAreaChart, 
   PieChartComponent,
   MetricGauge,
   ProgressBar,
 } from '../components/Charts'
-import { useTwinStore, usePredictionStore, useAnomalyStore, useActionStore } from '../store'
 import { TwinSnapshot, DashboardStats } from '../types'
 
 // Mock data generator

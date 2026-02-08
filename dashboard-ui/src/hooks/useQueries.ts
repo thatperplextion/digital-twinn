@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
-import { dashboardApi } from '../api';
+import dashboardApi from '../api';
 import { 
   DigitalTwin, 
   TwinSnapshot, 

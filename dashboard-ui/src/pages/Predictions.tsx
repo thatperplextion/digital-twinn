@@ -5,10 +5,8 @@ import {
   ArrowTrendingUpIcon,
   ClockIcon,
   CheckCircleIcon,
-  XCircleIcon,
-  ExclamationCircleIcon,
 } from '@heroicons/react/24/outline'
-import { GradientAreaChart, BarChartComponent, PieChartComponent } from '../components/Charts'
+import { GradientAreaChart, PieChartComponent } from '../components/Charts'
 import { Prediction } from '../types'
 import clsx from 'clsx'
 

@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
@@ -76,7 +76,7 @@ class ErrorBoundary extends Component<Props, State> {
               An unexpected error occurred. Our team has been notified.
             </p>
 
-            {process.env.NODE_ENV === 'development' && this.state.error && (
+            {import.meta.env.DEV && this.state.error && (
               <details className="text-left bg-gray-900 rounded p-3 mb-4 text-sm">
                 <summary className="text-red-400 cursor-pointer mb-2">
                   Error Details
