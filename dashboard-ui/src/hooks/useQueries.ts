@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
-import dashboardApi from '../api';
+import * as api from '../api';
 import { 
   DigitalTwin, 
   TwinSnapshot, 
@@ -7,7 +7,8 @@ import {
   Anomaly, 
   Action, 
   DashboardStats,
-  TwinEvent 
+  TwinEvent,
+  CreateTwinRequest
 } from '../types';
 
 // ==================== Query Keys ====================
@@ -51,7 +52,7 @@ export const queryKeys = {
 export function useDashboardStats(options?: Partial<UseQueryOptions<DashboardStats>>) {
   return useQuery({
     queryKey: queryKeys.dashboardStats,
-    queryFn: () => dashboardApi.getStats(),
+    queryFn: () => api.getDashboardStats(),
     staleTime: 10000, // 10 seconds
     refetchInterval: 30000, // 30 seconds
     ...options,
@@ -66,7 +67,7 @@ export function useTwins(
 ) {
   return useQuery({
     queryKey: queryKeys.twinsList(params),
-    queryFn: () => dashboardApi.getTwins(params),
+    queryFn: () => api.getAllTwins(params?.type),
     staleTime: 5000,
     ...options,
   });
@@ -78,7 +79,7 @@ export function useTwinDetail(
 ) {
   return useQuery({
     queryKey: queryKeys.twinDetail(id),
-    queryFn: () => dashboardApi.getTwin(id),
+    queryFn: () => api.getTwinDetails(id),
     enabled: !!id,
     staleTime: 5000,
     ...options,
@@ -91,7 +92,7 @@ export function useTwinHistory(
 ) {
   return useQuery({
     queryKey: queryKeys.twinHistory(id),
-    queryFn: () => dashboardApi.getTwinHistory(id),
+    queryFn: () => api.getRecentEvents(id),
     enabled: !!id,
     staleTime: 10000,
     ...options,
@@ -104,23 +105,10 @@ export function useCreateTwin() {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: (data: Partial<DigitalTwin>) => dashboardApi.createTwin(data),
+    mutationFn: (data: CreateTwinRequest) => api.createTwin(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.twins });
       queryClient.invalidateQueries({ queryKey: queryKeys.dashboardStats });
-    },
-  });
-}
-
-export function useUpdateTwin() {
-  const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Partial<DigitalTwin> }) => 
-      dashboardApi.updateTwin(id, data),
-    onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.twinDetail(id) });
-      queryClient.invalidateQueries({ queryKey: queryKeys.twins });
     },
   });
 }
@@ -129,7 +117,7 @@ export function useDeleteTwin() {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: (id: string) => dashboardApi.deleteTwin(id),
+    mutationFn: (id: string) => api.deleteTwin(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.twins });
       queryClient.invalidateQueries({ queryKey: queryKeys.dashboardStats });
@@ -145,20 +133,8 @@ export function usePredictions(
 ) {
   return useQuery({
     queryKey: queryKeys.predictionsList(params),
-    queryFn: () => dashboardApi.getPredictions(params),
+    queryFn: () => params?.twinId ? api.getPredictions(params.twinId) : api.getAllPredictions(),
     staleTime: 10000,
-    ...options,
-  });
-}
-
-export function usePredictionDetail(
-  id: string,
-  options?: Partial<UseQueryOptions<Prediction>>
-) {
-  return useQuery({
-    queryKey: queryKeys.predictionDetail(id),
-    queryFn: () => dashboardApi.getPrediction(id),
-    enabled: !!id,
     ...options,
   });
 }
@@ -171,45 +147,21 @@ export function useAnomalies(
 ) {
   return useQuery({
     queryKey: queryKeys.anomaliesList(params),
-    queryFn: () => dashboardApi.getAnomalies(params),
+    queryFn: () => params?.twinId ? api.getAnomalies(params.twinId) : api.getAllAnomalies(params?.severity),
     staleTime: 5000,
     refetchInterval: 15000, // Refresh every 15s for active monitoring
     ...options,
   });
 }
 
-export function useAnomalyDetail(
-  id: string,
-  options?: Partial<UseQueryOptions<Anomaly>>
-) {
-  return useQuery({
-    queryKey: queryKeys.anomalyDetail(id),
-    queryFn: () => dashboardApi.getAnomaly(id),
-    enabled: !!id,
-    ...options,
-  });
-}
-
 // ==================== Anomaly Mutations ====================
-
-export function useAcknowledgeAnomaly() {
-  const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: (id: string) => dashboardApi.acknowledgeAnomaly(id),
-    onSuccess: (_, id) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.anomalyDetail(id) });
-      queryClient.invalidateQueries({ queryKey: queryKeys.anomalies });
-    },
-  });
-}
 
 export function useResolveAnomaly() {
   const queryClient = useQueryClient();
   
   return useMutation({
     mutationFn: ({ id, resolution }: { id: string; resolution: string }) => 
-      dashboardApi.resolveAnomaly(id, resolution),
+      api.resolveAnomaly(id, resolution),
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.anomalyDetail(id) });
       queryClient.invalidateQueries({ queryKey: queryKeys.anomalies });
@@ -226,31 +178,19 @@ export function useActions(
 ) {
   return useQuery({
     queryKey: queryKeys.actionsList(params),
-    queryFn: () => dashboardApi.getActions(params),
+    queryFn: () => params?.twinId ? api.getActions(params.twinId) : api.getAllActions(params?.status),
     staleTime: 5000,
-    ...options,
-  });
-}
-
-export function useActionDetail(
-  id: string,
-  options?: Partial<UseQueryOptions<Action>>
-) {
-  return useQuery({
-    queryKey: queryKeys.actionDetail(id),
-    queryFn: () => dashboardApi.getAction(id),
-    enabled: !!id,
     ...options,
   });
 }
 
 // ==================== Action Mutations ====================
 
-export function useApproveAction() {
+export function useCancelAction() {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: (id: string) => dashboardApi.approveAction(id),
+    mutationFn: (id: string) => api.cancelAction(id),
     onSuccess: (_, id) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.actionDetail(id) });
       queryClient.invalidateQueries({ queryKey: queryKeys.actions });
@@ -258,26 +198,14 @@ export function useApproveAction() {
   });
 }
 
-export function useRejectAction() {
+export function useTriggerAction() {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: ({ id, reason }: { id: string; reason: string }) => 
-      dashboardApi.rejectAction(id, reason),
-    onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.actionDetail(id) });
-      queryClient.invalidateQueries({ queryKey: queryKeys.actions });
-    },
-  });
-}
-
-export function useRetryAction() {
-  const queryClient = useQueryClient();
-  
-  return useMutation({
-    mutationFn: (id: string) => dashboardApi.retryAction(id),
-    onSuccess: (_, id) => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.actionDetail(id) });
+    mutationFn: ({ twinId, actionType, parameters }: { twinId: string; actionType: string; parameters: Record<string, unknown> }) => 
+      api.triggerAction(twinId, actionType, parameters),
+    onSuccess: (_, { twinId }) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.twinDetail(twinId) });
       queryClient.invalidateQueries({ queryKey: queryKeys.actions });
     },
   });
@@ -289,7 +217,7 @@ export function useSendEvent() {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: (event: TwinEvent) => dashboardApi.sendEvent(event),
+    mutationFn: (event: Partial<TwinEvent>) => api.sendEvent(event),
     onSuccess: (_, event) => {
       if (event.twinId) {
         queryClient.invalidateQueries({ queryKey: queryKeys.twinDetail(event.twinId) });
@@ -307,7 +235,7 @@ export function usePrefetchTwin() {
   return (id: string) => {
     queryClient.prefetchQuery({
       queryKey: queryKeys.twinDetail(id),
-      queryFn: () => dashboardApi.getTwin(id),
+      queryFn: () => api.getTwinDetails(id),
       staleTime: 5000,
     });
   };
@@ -319,7 +247,7 @@ export function usePrefetchAnomalyDetail() {
   return (id: string) => {
     queryClient.prefetchQuery({
       queryKey: queryKeys.anomalyDetail(id),
-      queryFn: () => dashboardApi.getAnomaly(id),
+      queryFn: () => api.getAllAnomalies(),
       staleTime: 5000,
     });
   };

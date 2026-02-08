@@ -8,7 +8,6 @@ import {
   ChartBarIcon,
 } from '@heroicons/react/24/outline'
 import { MultiLineChart } from '../components/Charts'
-import { TwinSnapshot } from '../types'
 import clsx from 'clsx'
 
 const mockTwins: { id: string; name: string }[] = [
