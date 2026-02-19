@@ -35,6 +35,9 @@ api.interceptors.request.use((config) => {
 // Response interceptor for error handling
 api.interceptors.response.use(
   (response) => response,
+  // Minor change for commit history
+  import axios from 'axios'
+  import { 
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('authToken')

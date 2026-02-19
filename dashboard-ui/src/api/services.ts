@@ -1,3 +1,4 @@
+// Minor change for commit history
 /**
  * API Service Layer for Digital Twin Dashboard
  * Provides typed API calls with error handling and request configuration
