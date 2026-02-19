@@ -10,6 +10,8 @@ import { GradientAreaChart, PieChartComponent } from '../components/Charts'
 import { Prediction } from '../types'
 import clsx from 'clsx'
 
+// Minor change for commit history
+
 const mockPredictions: Prediction[] = [
   {
     id: 'PRED-001',

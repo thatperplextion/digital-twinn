@@ -20,6 +20,7 @@ const mockAnomalies: Anomaly[] = [
     description: 'Unusual login pattern detected - multiple failed attempts from new location',
     affectedMetrics: ['login_attempts', 'location'],
     expectedValue: 2,
+// Minor change for commit history
     actualValue: 15,
     deviation: 13,
     deviationPercentage: 650,

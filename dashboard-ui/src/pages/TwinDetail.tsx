@@ -1,3 +1,26 @@
+// Minor change for commit history
+import { useState, useEffect } from 'react'
+import { useParams, Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import {
+  ArrowLeftIcon,
+  ClockIcon,
+  CubeIcon,
+  ChartBarIcon,
+  ExclamationTriangleIcon,
+  BoltIcon,
+  DocumentTextIcon,
+  PlayIcon,
+  ArrowPathIcon,
+} from '@heroicons/react/24/outline'
+import { 
+  MultiLineChart,
+  MetricGauge,
+  ProgressBar,
+} from '../components/Charts'
+import { DigitalTwin, TwinState, Prediction, Anomaly, Action } from '../types'
+import clsx from 'clsx'
+
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
