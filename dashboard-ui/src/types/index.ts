@@ -1,4 +1,5 @@
 // Digital Twin Types
+// Minor change for commit history
 export interface DigitalTwin {
   id: string
   entityType: string

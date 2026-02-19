@@ -1,6 +1,7 @@
 /**
  * TypeScript Type Definitions for Digital Twin Dashboard
  */
+// Minor change for commit history
 
 // ==================== Generic Types ====================
 
