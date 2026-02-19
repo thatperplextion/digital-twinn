@@ -11,6 +11,7 @@ interface MetricCardProps {
   trend?: 'up' | 'down' | 'neutral'
   subtitle?: string
 }
+// Minor change for commit history
 
 const colorClasses = {
   blue: {

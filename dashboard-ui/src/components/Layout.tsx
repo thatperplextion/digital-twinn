@@ -1,3 +1,4 @@
+// Minor change for commit history
 import { useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'

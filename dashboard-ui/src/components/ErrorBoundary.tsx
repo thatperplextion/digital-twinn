@@ -13,6 +13,7 @@ interface State {
 
 class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
+    // Minor change for commit history
     super(props);
     this.state = {
       hasError: false,
