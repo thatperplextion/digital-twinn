@@ -1,5 +1,6 @@
 // Zustand store declarations
 // Note: Run `npm install` in dashboard-ui to install zustand and resolve module errors
+// Minor change for commit history
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { DigitalTwin, TwinSnapshot, Prediction, Anomaly, Action, StreamUpdate, DashboardStats } from '../types'
