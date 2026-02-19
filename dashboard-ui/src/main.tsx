@@ -1,3 +1,4 @@
+// Minor change for commit history
 /**
  * Application Entry Point
  * Sets up React Query, Router, and Error Boundary

@@ -1,3 +1,4 @@
+// Minor change for commit history
 /**
  * Main Application Component
  * Defines the routing structure for the Digital Twin Dashboard
