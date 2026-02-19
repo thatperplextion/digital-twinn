@@ -2,6 +2,7 @@
  * Application Constants
  * Centralized configuration values for the Digital Twin Dashboard
  */
+[Minor change for commit history]
 
 // ==================== API Configuration ====================
 
