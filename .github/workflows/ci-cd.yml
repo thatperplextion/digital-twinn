@@ -37,10 +37,22 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven
-        run: ./mvnw clean verify -DskipTests
+        run: |
+          if [ -f ./mvnw ]; then
+            chmod +x ./mvnw
+            ./mvnw clean verify -DskipTests
+          else
+            mvn clean verify -DskipTests
+          fi
 
       - name: Run Tests
-        run: ./mvnw test
+        run: |
+          if [ -f ./mvnw ]; then
+            chmod +x ./mvnw
+            ./mvnw test
+          else
+            mvn test
+          fi
 
       - name: Upload test results
         uses: actions/upload-artifact@v4

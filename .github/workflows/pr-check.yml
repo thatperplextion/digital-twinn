@@ -52,7 +52,13 @@ jobs:
           cache: 'maven'
 
       - name: Compile and run tests
-        run: ./mvnw clean verify
+        run: |
+          if [ -f ./mvnw ]; then
+            chmod +x ./mvnw
+            ./mvnw clean verify
+          else
+            mvn clean verify
+          fi
 
       - name: Check code coverage
         run: |
