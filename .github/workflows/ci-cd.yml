@@ -176,14 +176,14 @@ jobs:
 
       - name: Download Java artifacts
         if: ${{ !contains(matrix.service.name, 'ui') && !contains(matrix.service.name, 'ml') }}
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: java-artifacts
           path: .
 
       - name: Download frontend build
         if: matrix.service.name == 'dashboard-ui'
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: frontend-build
           path: dashboard-ui/dist
