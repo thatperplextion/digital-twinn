@@ -157,21 +157,29 @@ jobs:
       matrix:
         service:
           - name: event-gateway
-            context: ./twin-event-gateway
+            context: .
+            dockerfile: ./twin-event-gateway/Dockerfile
           - name: state-engine
-            context: ./twin-state-engine
+            context: .
+            dockerfile: ./twin-state-engine/Dockerfile
           - name: prediction-engine
-            context: ./twin-prediction-engine
+            context: .
+            dockerfile: ./twin-prediction-engine/Dockerfile
           - name: anomaly-engine
-            context: ./twin-anomaly-engine
+            context: .
+            dockerfile: ./twin-anomaly-engine/Dockerfile
           - name: action-engine
-            context: ./twin-action-engine
+            context: .
+            dockerfile: ./twin-action-engine/Dockerfile
           - name: dashboard-api
-            context: ./twin-dashboard-api
+            context: .
+            dockerfile: ./twin-dashboard-api/Dockerfile
           - name: dashboard-ui
             context: ./dashboard-ui
+            dockerfile: ./dashboard-ui/Dockerfile
           - name: ml-service
             context: ./ml-service
+            dockerfile: ./ml-service/Dockerfile
 
     steps:
       - name: Checkout code
@@ -215,6 +223,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ${{ matrix.service.context }}
+          file: ${{ matrix.service.dockerfile }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
