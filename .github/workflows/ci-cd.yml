@@ -157,19 +157,19 @@ jobs:
       matrix:
         service:
           - name: event-gateway
-            context: .
+            context: ./twin-event-gateway
             dockerfile: ./twin-event-gateway/Dockerfile
           - name: state-engine
-            context: .
+            context: ./twin-state-engine
             dockerfile: ./twin-state-engine/Dockerfile
           - name: prediction-engine
-            context: .
+            context: ./twin-prediction-engine
             dockerfile: ./twin-prediction-engine/Dockerfile
           - name: anomaly-engine
-            context: .
+            context: ./twin-anomaly-engine
             dockerfile: ./twin-anomaly-engine/Dockerfile
           - name: action-engine
-            context: .
+            context: ./twin-action-engine
             dockerfile: ./twin-action-engine/Dockerfile
           - name: dashboard-api
             context: .
