@@ -141,3 +141,7 @@ jobs:
 
       - name: Validate docker-compose
         run: docker compose config -q
+        env:
+          POSTGRES_PASSWORD: ci-validation-placeholder
+          JWT_SECRET: ci-validation-placeholder
+          GRAFANA_ADMIN_PASSWORD: ci-validation-placeholder
