@@ -36,7 +36,7 @@
         <jedis.version>5.1.0</jedis.version>
         <jsonwebtoken.version>0.12.3</jsonwebtoken.version>
         <springdoc.version>2.3.0</springdoc.version>
-        <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <mapstruct.version>1.6.3</mapstruct.version>
         <lombok.version>1.18.42</lombok.version>
     </properties>
     
