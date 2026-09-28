@@ -1,23 +1,6 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
-import { StreamUpdate } from '../types';
 
-interface WebSocketOptions {
-  url: string;
-  onMessage?: (data: StreamUpdate) => void;
-  onOpen?: () => void;
-  onClose?: () => void;
-  onError?: (error: Event) => void;
-  reconnectInterval?: number;
-  maxReconnectAttempts?: number;
-}
-
-interface WebSocketState {
-  isConnected: boolean;
-  reconnectAttempts: number;
-  lastMessage: StreamUpdate | null;
-}
-
-export function useWebSocket(options: WebSocketOptions) {
+export function useWebSocket(options) {
   const {
     url,
     onMessage,
@@ -28,10 +11,10 @@ export function useWebSocket(options: WebSocketOptions) {
     maxReconnectAttempts = 10,
   } = options;
 
-  const wsRef = useRef<WebSocket | null>(null);
-  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  
-  const [state, setState] = useState<WebSocketState>({
+  const wsRef = useRef(null);
+  const reconnectTimeoutRef = useRef(null);
+
+  const [state, setState] = useState({
     isConnected: false,
     reconnectAttempts: 0,
     lastMessage: null,
@@ -58,7 +41,7 @@ export function useWebSocket(options: WebSocketOptions) {
 
       ws.onmessage = (event) => {
         try {
-          const data: StreamUpdate = JSON.parse(event.data);
+          const data = JSON.parse(event.data);
           setState(prev => ({ ...prev, lastMessage: data }));
           onMessage?.(data);
         } catch (err) {
@@ -100,16 +83,16 @@ export function useWebSocket(options: WebSocketOptions) {
       clearTimeout(reconnectTimeoutRef.current);
       reconnectTimeoutRef.current = null;
     }
-    
+
     if (wsRef.current) {
       wsRef.current.close();
       wsRef.current = null;
     }
-    
+
     setState(prev => ({ ...prev, isConnected: false }));
   }, []);
 
-  const sendMessage = useCallback((data: unknown) => {
+  const sendMessage = useCallback((data) => {
     if (wsRef.current?.readyState === WebSocket.OPEN) {
       wsRef.current.send(JSON.stringify(data));
     } else {
@@ -119,7 +102,6 @@ export function useWebSocket(options: WebSocketOptions) {
 
   useEffect(() => {
     connect();
-    
     return () => {
       disconnect();
     };
@@ -137,15 +119,7 @@ export function useWebSocket(options: WebSocketOptions) {
 
 // ==================== Event Stream Hook ====================
 
-interface UseEventStreamOptions {
-  twinId?: string;
-  onTwinUpdate?: (data: StreamUpdate) => void;
-  onAnomalyDetected?: (data: StreamUpdate) => void;
-  onPredictionGenerated?: (data: StreamUpdate) => void;
-  onActionExecuted?: (data: StreamUpdate) => void;
-}
-
-export function useEventStream(options: UseEventStreamOptions = {}) {
+export function useEventStream(options = {}) {
   const {
     twinId,
     onTwinUpdate,
@@ -158,7 +132,7 @@ export function useEventStream(options: UseEventStreamOptions = {}) {
     ? `ws://${window.location.host}/api/stream/twin/${twinId}`
     : `ws://${window.location.host}/api/stream`;
 
-  const handleMessage = useCallback((data: StreamUpdate) => {
+  const handleMessage = useCallback((data) => {
     switch (data.type) {
       case 'TWIN_UPDATED':
         onTwinUpdate?.(data);
@@ -185,24 +159,17 @@ export function useEventStream(options: UseEventStreamOptions = {}) {
 
 // ==================== Real-time Stats Hook ====================
 
-interface RealtimeStats {
-  activeConnections: number;
-  eventsPerSecond: number;
-  activeTwins: number;
-  pendingActions: number;
-}
-
 export function useRealtimeStats() {
-  const [stats, setStats] = useState<RealtimeStats>({
+  const [stats, setStats] = useState({
     activeConnections: 0,
     eventsPerSecond: 0,
     activeTwins: 0,
     pendingActions: 0,
   });
 
-  const handleMessage = useCallback((data: StreamUpdate) => {
+  const handleMessage = useCallback((data) => {
     if (data.type === 'STATS_UPDATE' && data.payload) {
-      setStats(data.payload as RealtimeStats);
+      setStats(data.payload);
     }
   }, []);
 

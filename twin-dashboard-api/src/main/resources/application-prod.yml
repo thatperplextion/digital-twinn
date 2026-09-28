@@ -4,8 +4,6 @@ server:
 spring:
   application:
     name: twin-dashboard-api
-  profiles:
-    active: ${SPRING_PROFILES_ACTIVE:prod}
   
   # Disable Kafka in production (use HTTP endpoints instead)
   autoconfigure:

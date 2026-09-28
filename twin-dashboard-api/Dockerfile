@@ -13,6 +13,11 @@ RUN apk add --no-cache maven
 COPY pom.xml ./
 COPY twin-common ./twin-common
 COPY twin-core ./twin-core
+COPY twin-event-gateway ./twin-event-gateway
+COPY twin-state-engine ./twin-state-engine
+COPY twin-prediction-engine ./twin-prediction-engine
+COPY twin-anomaly-engine ./twin-anomaly-engine
+COPY twin-action-engine ./twin-action-engine
 COPY twin-dashboard-api ./twin-dashboard-api
 
 # Build the application with dependencies
