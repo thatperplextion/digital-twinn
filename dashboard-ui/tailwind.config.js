@@ -6,7 +6,7 @@
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{js,jsx}",
   ],
   darkMode: 'class',
   theme: {
@@ -205,4 +205,5 @@ export default {
     },
   },
   plugins: [],
+  
 }

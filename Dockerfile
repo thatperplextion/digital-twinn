@@ -1,5 +1,5 @@
 # Dashboard API Dockerfile - Java 21
-# Must be built from repo root with: docker build -f twin-dashboard-api/Dockerfile .
+# Build from repo root
 
 # Stage 1: Build
 FROM eclipse-temurin:21-jdk-alpine AS builder
@@ -9,16 +9,16 @@ WORKDIR /build
 # Install Maven
 RUN apk add --no-cache maven
 
-# Copy all project files (build from repo root)
+# Copy all project files (entire monorepo)
 COPY pom.xml ./
 COPY twin-common ./twin-common
 COPY twin-core ./twin-core
+COPY twin-dashboard-api ./twin-dashboard-api
 COPY twin-event-gateway ./twin-event-gateway
 COPY twin-state-engine ./twin-state-engine
 COPY twin-prediction-engine ./twin-prediction-engine
 COPY twin-anomaly-engine ./twin-anomaly-engine
 COPY twin-action-engine ./twin-action-engine
-COPY twin-dashboard-api ./twin-dashboard-api
 
 # Build the application with dependencies
 RUN mvn clean package -pl twin-dashboard-api -am -DskipTests
