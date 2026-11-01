@@ -1,5 +1,5 @@
 # Python ML Service for Digital Twin Platform
-FROM python:3.11-slim
+FROM python:3.15-slim
 
 WORKDIR /app
 
